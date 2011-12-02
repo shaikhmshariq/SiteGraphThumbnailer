@@ -6,6 +6,8 @@ package com.sitegraph.core;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
 import com.trolltech.qt.core.QObject;
@@ -22,6 +24,7 @@ import com.trolltech.qt.webkit.QWebPage;
 
 public class SiteGraphThumbnailer extends QObject{
 
+	private static final Logger logger = Logger.getLogger(SiteGraphThumbnailer.class);
 	/**
 	 * @param args
 	 */
@@ -97,6 +100,9 @@ public class SiteGraphThumbnailer extends QObject{
 	 */
 	public boolean makeSnap(){
 		try{
+			
+		if(logger.isDebugEnabled())
+			logger.debug("Connecting to url : "+this.url);
 		QApplication.initialize(new String[] { });
 		page = new QWebPage(null);
 		page.mainFrame().load(new QNetworkRequest(this.url));
@@ -104,6 +110,7 @@ public class SiteGraphThumbnailer extends QObject{
 		finished.connect(QApplication.instance(), "quit()");
         QApplication.exec();
 		}catch(Exception exp){
+			logger.error(exp.getMessage()+ "Error While taking a snap");
 			return false;
 		}
 		return true;
