@@ -8,6 +8,7 @@ import com.trolltech.qt.core.QSize;
 
 public class JPEGImageAttributes extends ImageAttributes {
 
+	private String mimeType="image/jpeg";
 	/**
 	 *  Class Default constructor
 	 */

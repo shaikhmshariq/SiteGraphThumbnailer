@@ -12,6 +12,7 @@ public class ImageAttributes {
 	protected String imageSuffix=null;
 	protected QSize imageSize=null;
 	protected String absoluteImageFilePath = Constants.DEFAULT_IMAGE_ABSOLUTH_PATH;
+	protected String mimeType = "image";
 	
 	/**
 	 *  Class Default constructor

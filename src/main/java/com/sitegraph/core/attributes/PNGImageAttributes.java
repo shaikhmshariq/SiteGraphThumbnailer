@@ -8,6 +8,8 @@ import com.trolltech.qt.core.QSize;
 
 public class PNGImageAttributes extends ImageAttributes {
 
+	private String mimeType="image/png";
+	
 	/**
 	 *  Class Default constructor
 	 */

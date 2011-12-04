@@ -16,7 +16,7 @@ import com.trolltech.qt.core.QSize;
 
 public class TestFileSystemThumbnailer {
 
-	private static final String url = "http://www.yahoo.com";
+	private static final String url = "http://localhost/whybroadband.co.uk/broadbandproviders/toucan_broadband.shtml?user_id=AA100003";
 	private static final String IMAGE_PATH = "C:\\temp\\Image";
 	private static final QSize Q_800x600 = new QSize(800,600);
 	private static final ImageAttributes pngImageAttributes = new PNGImageAttributes(IMAGE_PATH + "_PNG");

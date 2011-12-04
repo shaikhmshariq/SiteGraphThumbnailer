@@ -81,8 +81,8 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
 	 */
 	public void loadDone() {
-		for(ImageAttributes imageAttributes: this.imageAttributes){
-			page.setViewportSize(imageAttributes.getImageSize());
+		for(ImageAttributes imageAttribute: this.imageAttributes){
+			page.setViewportSize(imageAttribute.getImageSize());
 			page.mainFrame().setScrollBarPolicy(Orientation.Horizontal, ScrollBarPolicy.ScrollBarAlwaysOff);
 			page.mainFrame().setScrollBarPolicy(Orientation.Vertical, ScrollBarPolicy.ScrollBarAlwaysOff);
 		    QImage image = new QImage(page.viewportSize(), QImage.Format.Format_ARGB32);
@@ -90,7 +90,7 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 		    QPainter painter = new QPainter(image);
 		    page.mainFrame().render(painter);
 		    painter.end();
-		    String imageName=imageAttributes.getAbsoluteImageFilePath() + imageAttributes.getImageSuffix();
+		    String imageName=imageAttribute.getAbsoluteImageFilePath() + imageAttribute.getImageSuffix();
 		    image.save(imageName);
 		}
 	    finished.emit();
