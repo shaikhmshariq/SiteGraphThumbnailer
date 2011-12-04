@@ -67,11 +67,14 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 		QApplication.initialize(new String[] { });
 		page = new QWebPage(null);
 		page.mainFrame().load(new QNetworkRequest(this.url));
+		logger.debug("Page Loaded");
 		page.loadFinished.connect(this, "loadDone()");
+		logger.debug("Load Finished");
 		finished.connect(QApplication.instance(), "quit()");
+		logger.debug("image created");
         QApplication.exec();
 		}catch(Exception exp){
-			logger.error(exp.getMessage()+ "Error While taking a snap");
+			logger.error(exp.getMessage()+ " Error While taking a snap");
 			return false;
 		}
 		return true;
@@ -80,8 +83,10 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 	/**
 	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
 	 */
-	public void loadDone() {
+	public boolean loadDone() {
+		logger.debug("Loading for page url : "+ this.url);
 		for(ImageAttributes imageAttribute: this.imageAttributes){
+			logger.debug("Loading for page url : "+ this.url);
 			page.setViewportSize(imageAttribute.getImageSize());
 			page.mainFrame().setScrollBarPolicy(Orientation.Horizontal, ScrollBarPolicy.ScrollBarAlwaysOff);
 			page.mainFrame().setScrollBarPolicy(Orientation.Vertical, ScrollBarPolicy.ScrollBarAlwaysOff);
@@ -90,10 +95,13 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 		    QPainter painter = new QPainter(image);
 		    page.mainFrame().render(painter);
 		    painter.end();
+		    //String imageName = "E:\\image.png";
 		    String imageName=imageAttribute.getAbsoluteImageFilePath() + imageAttribute.getImageSuffix();
+		    logger.debug("Preparing image : "+ imageName);
 		    image.save(imageName);
 		}
 	    finished.emit();
+	    return true;
     }
 	
 	/*

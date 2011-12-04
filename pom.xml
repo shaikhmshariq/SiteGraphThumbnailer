@@ -3,6 +3,10 @@
   <groupId>SiteGraphThumbnailer</groupId>
   <artifactId>SiteGraphThumbnailer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <properties>
+  	<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
+  </properties>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -61,18 +65,6 @@
 		<artifactId>qtjambi</artifactId>
 		<version>4.5.2_01</version>
 	</dependency>
-	<dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>3.0.0.RELEASE</version>
-      <scope>runtime</scope>
-      <exclusions>
-         <exclusion>
-           <groupId>commons-logging</groupId>
-           <artifactId>commons-logging</artifactId>
-         </exclusion>
-      </exclusions>
-   </dependency>
    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
@@ -105,5 +97,41 @@
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
+   <dependency>
+   	<groupId>org.springframework</groupId>
+   	<artifactId>spring-web</artifactId>
+   	<version>${org.springframework-version}</version>
+   	<optional>false</optional>
+   </dependency>
+   <dependency>
+   	<groupId>org.springframework</groupId>
+   	<artifactId>spring-context</artifactId>
+   	<version>3.0.0.RELEASE</version>
+   	<optional>false</optional>
+   </dependency>
+   <dependency>
+   	<groupId>org.springframework</groupId>
+   	<artifactId>spring-aop</artifactId>
+   	<version>${org.springframework-version}</version>
+   	<optional>false</optional>
+   </dependency>
+   <dependency>
+   	<groupId>org.springframework</groupId>
+   	<artifactId>spring-beans</artifactId>
+   	<version>${org.springframework-version}</version>
+   	<optional>false</optional>
+   </dependency>
+   <dependency>
+   	<groupId>org.springframework</groupId>
+   	<artifactId>spring-webmvc</artifactId>
+   	<version>${org.springframework-version}</version>
+   	<optional>false</optional>
+   </dependency>
+   <dependency>
+   	<groupId>javax.servlet</groupId>
+   	<artifactId>servlet-api</artifactId>
+   	<version>2.5</version>
+   	<optional>false</optional>
+   </dependency>
   </dependencies>
 </project>

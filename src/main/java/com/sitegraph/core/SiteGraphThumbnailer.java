@@ -95,7 +95,7 @@ public abstract class SiteGraphThumbnailer extends QObject{
 	/**
 	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
 	 */
-	public abstract void loadDone();
+	public abstract boolean loadDone();
 	/*
 	 * Signal for finished QApplication
 	 */
