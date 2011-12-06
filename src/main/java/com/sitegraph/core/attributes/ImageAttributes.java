@@ -5,13 +5,14 @@
 package com.sitegraph.core.attributes;
 
 import com.sitegraph.core.util.Constants;
+import com.sitegraph.core.util.WebAppConstants;
 import com.trolltech.qt.core.QSize;
 
 public class ImageAttributes {
 
 	protected String imageSuffix=null;
 	protected QSize imageSize=null;
-	protected String absoluteImageFilePath = Constants.DEFAULT_IMAGE_ABSOLUTH_PATH;
+	protected String absoluteImageFilePath = WebAppConstants.DEFAULT_IMAGE_ABSOLUTH_PATH;
 	
 	/**
 	 *  Class Default constructor

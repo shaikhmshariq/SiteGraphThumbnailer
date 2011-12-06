@@ -7,9 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
+import com.sitegraph.core.util.WebAppUtils;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.Qt.Orientation;
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
@@ -24,6 +26,12 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 
 	private static final Logger logger = Logger.getLogger(FileSystemThumbnailer.class);
 	
+	/*
+	 * Default constructor forcefully added for aop scoped auto proxy 
+	 */
+	public FileSystemThumbnailer(){
+		super();
+	}
 	/**
 	 * @param url URL of Web Page in String
 	 */
@@ -61,29 +69,35 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 	 */
 	public boolean makeSnap(){
 		try{
-			
 		if(logger.isDebugEnabled())
 			logger.debug("Connecting to url : "+this.url);
 		QApplication.initialize(new String[] { });
 		page = new QWebPage(null);
 		page.mainFrame().load(new QNetworkRequest(this.url));
 		logger.debug("Page Loaded");
+		page.loadStarted.connect(this, "loadStarted()");
+		page.loadProgress.connect(this, "loadProgress()");
 		page.loadFinished.connect(this, "loadDone()");
 		logger.debug("Load Finished");
 		finished.connect(QApplication.instance(), "quit()");
 		logger.debug("image created");
-        QApplication.exec();
-		}catch(Exception exp){
+		QApplication.exec();
+    	}catch(Exception exp){
 			logger.error(exp.getMessage()+ " Error While taking a snap");
 			return false;
 		}
 		return true;
 	}
-	
+	private void loadStarted(){
+		logger.debug("Part in Started");
+	}
+	private void loadProgress(){
+		logger.debug("Part in Progress");
+	}
 	/**
 	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
 	 */
-	public boolean loadDone() {
+	private boolean loadDone() {
 		logger.debug("Loading for page url : "+ this.url);
 		for(ImageAttributes imageAttribute: this.imageAttributes){
 			logger.debug("Loading for page url : "+ this.url);
@@ -95,10 +109,9 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 		    QPainter painter = new QPainter(image);
 		    page.mainFrame().render(painter);
 		    painter.end();
-		    //String imageName = "E:\\image.png";
-		    String imageName=imageAttribute.getAbsoluteImageFilePath() + imageAttribute.getImageSuffix();
+		    String imageName= WebAppUtils.resolveImageName(imageAttribute, this.url.toString());
 		    logger.debug("Preparing image : "+ imageName);
-		    image.save(imageName);
+		    logger.info("Image prepared: "+image.save(imageName));
 		}
 	    finished.emit();
 	    return true;

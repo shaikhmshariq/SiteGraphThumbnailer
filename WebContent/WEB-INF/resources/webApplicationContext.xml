@@ -12,4 +12,5 @@
 
 <mvc:annotation-driven/>
 <context:component-scan base-package="com.sitegraph.web.controller"></context:component-scan>
+<mvc:default-servlet-handler/>
 </beans>

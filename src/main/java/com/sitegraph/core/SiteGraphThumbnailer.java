@@ -6,18 +6,16 @@ package com.sitegraph.core;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
+import com.sitegraph.core.util.Constants;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QUrl;
 import com.trolltech.qt.webkit.QWebPage;
 
 
-public abstract class SiteGraphThumbnailer extends QObject{
+	public abstract class SiteGraphThumbnailer extends QObject{
 
-	private static final Logger logger = Logger.getLogger(SiteGraphThumbnailer.class);
 	/**
 	 * @param args
 	 */
@@ -26,6 +24,12 @@ public abstract class SiteGraphThumbnailer extends QObject{
 	protected List<ImageAttributes> imageAttributes=null;
 	public Signal0 finished = new Signal0();
 	
+	/*
+	 * Default constructor forcefully added for aop scoped auto proxy 
+	 */
+	public SiteGraphThumbnailer(){
+		this(null,Constants.DEFAULT_URL,Arrays.asList(new ImageAttributes[]{ new PNGImageAttributes()}));
+	}
 	/**
 	 * @param url URL of Web Page in String
 	 */
@@ -95,12 +99,6 @@ public abstract class SiteGraphThumbnailer extends QObject{
 	/**
 	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
 	 */
-	public abstract boolean loadDone();
-	/*
-	 * Signal for finished QApplication
-	 */
-	public void quit(){
-		if(logger.isDebugEnabled())
-			logger.debug("Snap Created for URL : "+this.url);
-	}
+//	public abstract boolean loadDone();
+	
 }
