@@ -25,13 +25,18 @@ import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QUrl;
 
 @Controller
-@RequestMapping("/image")
+@RequestMapping("/images")
 public class SnapController implements ServletContextAware{
 
 	@Autowired
 	private SiteGraphThumbnailer thumbnailer;
 	private ServletContext servletContext;
 	
+	/**
+	 * Generates image using default PNG image type and size.
+	 * @param url URL of web page.
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/")
 	public String makeSnap(@RequestParam("URL") String url){
 		thumbnailer.setUrl(new QUrl(url));
@@ -45,6 +50,12 @@ public class SnapController implements ServletContextAware{
 			return "redirect:/";
 	}
 	
+	/**
+	 * Generates image of imageType specified with default size.
+	 * @param url URL of web page
+	 * @param imageType
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}")
 	public String makeSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType){
 		thumbnailer.setUrl(new QUrl(url));
@@ -59,43 +70,17 @@ public class SnapController implements ServletContextAware{
 		else
 			return "redirect:/";
 	}
-	/*
-	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}/{imageWidth}")
-	public String makeSnapOfHeight(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth){
-		thumbnailer.setUrl(new QUrl(url));
-		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
-		QSize imageSize = attribute.getImageSize();
-		imageSize.setWidth(imageWidth);
-		imageType = WebAppUtils.validateImageType(imageType);
-		attribute.setImageSuffix(imageType);
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
-		}
-		else
-			return "redirect:/";
-	}
 	
-	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}/{imageHeight}")
-	public String makeSnapOfWidth(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageHeight){
-		thumbnailer.setUrl(new QUrl(url));
-		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
-		QSize imageSize = attribute.getImageSize();
-		imageSize.setHeight(imageHeight);
-		imageType = WebAppUtils.validateImageType(imageType);
-		attribute.setImageSuffix(imageType);
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
-		}
-		else
-			return "redirect:/";
-	}
-	*/
-	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}/{imageHeight}/{imageWidth}")
-	public String makeSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageHeight, @PathVariable int imageWidth){
+	/**
+	 * Generates image using provided parameters.
+	 * @param url
+	 * @param imageType
+	 * @param imageWidth
+	 * @param imageHeight
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}/{imageWidth}/{imageHeight}")
+	public String makeSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight){
 		thumbnailer.setUrl(new QUrl(url));
 		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
 		QSize imageSize = attribute.getImageSize();
@@ -112,19 +97,100 @@ public class SnapController implements ServletContextAware{
 			return "redirect:/";
 	}
 	
+	/**
+	 * Generates mirror image of web page.
+	 * @param url
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/")
+	public String makeMirrorSnap(@RequestParam("URL") String url){
+		thumbnailer.setUrl(new QUrl(url));
+		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
+		attribute.setMirrored(true);
+		if(thumbnailer.makeSnap())
+		{
+			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
+			System.out.println(generatedImage);
+			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}
+		else
+			return "redirect:/";
+	}
+	
+	/**
+	 * Generates mirror image of imageType provided.
+	 * @param url
+	 * @param imageType
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/{imageType}")
+	public String makeMirrorSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType){
+		thumbnailer.setUrl(new QUrl(url));
+		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
+		attribute.setMirrored(true);
+		imageType = WebAppUtils.validateImageType(imageType);
+		attribute.setImageSuffix(imageType);
+		if(thumbnailer.makeSnap())
+		{
+			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
+			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}
+		else
+			return "redirect:/";
+	}
+	
+	/**
+	 * Generates mirror image of provided parameters.
+	 * @param url
+	 * @param imageType
+	 * @param imageWidth
+	 * @param imageHeight
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/{imageType}/{imageWidth}/{imageHeight}")
+	public String makeMirrorSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight){
+		thumbnailer.setUrl(new QUrl(url));
+		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
+		attribute.setMirrored(true);
+		QSize imageSize = attribute.getImageSize();
+		imageSize.setHeight(imageHeight);
+		imageSize.setWidth(imageWidth);
+		imageType = WebAppUtils.validateImageType(imageType);
+		attribute.setImageSuffix(imageType);
+		if(thumbnailer.makeSnap())
+		{
+			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
+			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}
+		else
+			return "redirect:/";
+	}
+	
+	/**
+	 * Default landing page.
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping("/")
 	@ResponseBody()
 	public String homePage(HttpServletResponse response){
 		response.setContentType("text/html");
-		return "<title>SiteGraphThumbnailer</title><h1>Welcome to SiteGraph</h1>";
+		return "<title>SiteGraphThumbnailer</title><h1>Welcome to SiteGraph</h1>Soon some meaningful contents will be here. ";
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.web.context.ServletContextAware#setServletContext(javax.servlet.ServletContext)
+	 */
 	@Override
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 		WebAppConstants.IMAGE_ABSOLUTE_PATH = this.servletContext.getRealPath("/") + WebAppConstants.IMAGE_ABSOLUTE_PATH; 
 		System.out.println("Default path : "+ WebAppConstants.IMAGE_ABSOLUTE_PATH);
 	} 
+	
+	/**
+	 * @return
+	 */
 	public ServletContext getServletContext(){
 		return this.servletContext;
 	}

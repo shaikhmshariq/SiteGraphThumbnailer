@@ -13,6 +13,7 @@ public class ImageAttributes {
 	protected String imageSuffix=null;
 	protected QSize imageSize=null;
 	protected String absoluteImageFilePath = WebAppConstants.IMAGE_ABSOLUTE_PATH;
+	protected boolean mirrored = false;
 	
 	/**
 	 *  Class Default constructor
@@ -93,6 +94,19 @@ public class ImageAttributes {
 	 */
 	public void setAbsoluteImageFilePath(String absoluteImageFilePath) {
 		this.absoluteImageFilePath = absoluteImageFilePath;
+	}
+	/**
+	 * @param Denotes if mirror image needs to be created.  
+	 */
+	public boolean isMirrored() {
+		return mirrored;
+	}
+
+	/**
+	 * @param Sets mirror image indicator.  
+	 */
+	public void setMirrored(boolean mirrored) {
+		this.mirrored = mirrored;
 	}
 	
 	

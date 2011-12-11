@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
+import com.sitegraph.core.util.Constants;
 import com.sitegraph.core.util.WebAppUtils;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QSize;
@@ -107,12 +107,15 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 			page.setViewportSize(imageAttribute.getImageSize());
 			page.mainFrame().setScrollBarPolicy(Orientation.Horizontal, ScrollBarPolicy.ScrollBarAlwaysOff);
 			page.mainFrame().setScrollBarPolicy(Orientation.Vertical, ScrollBarPolicy.ScrollBarAlwaysOff);
+			page.setViewportSize(new QSize(Constants.DEFAULT_IMAGE_WIDTH, Constants.DEFAULT_IMAGE_HEIGHT));
 		    QImage image = new QImage(page.viewportSize(), QImage.Format.Format_ARGB32);
 		    image.fill(QColor.white.rgb());
-		    image = image.scaled(imageAttribute.getImageSize(),AspectRatioMode.KeepAspectRatio,TransformationMode.FastTransformation);
 		    QPainter painter = new QPainter(image);
 		    page.mainFrame().render(painter);
 		    painter.end();
+		    image = image.scaled(imageAttribute.getImageSize(),AspectRatioMode.IgnoreAspectRatio,TransformationMode.FastTransformation);
+		    if(imageAttribute.isMirrored())
+		    	image = image.mirrored();
 		    String imageName= WebAppUtils.resolveImageStoragePath(imageAttribute, this.url.toString());
 		    logger.debug("Preparing image : "+ imageName);
 		    logger.info("Image prepared: "+image.save(imageName));
