@@ -13,8 +13,11 @@ import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
 import com.sitegraph.core.util.WebAppUtils;
 import com.trolltech.qt.core.QObject;
+import com.trolltech.qt.core.QSize;
+import com.trolltech.qt.core.Qt.AspectRatioMode;
 import com.trolltech.qt.core.Qt.Orientation;
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
+import com.trolltech.qt.core.Qt.TransformationMode;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QImage;
@@ -106,10 +109,11 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 			page.mainFrame().setScrollBarPolicy(Orientation.Vertical, ScrollBarPolicy.ScrollBarAlwaysOff);
 		    QImage image = new QImage(page.viewportSize(), QImage.Format.Format_ARGB32);
 		    image.fill(QColor.white.rgb());
+		    image = image.scaled(imageAttribute.getImageSize(),AspectRatioMode.KeepAspectRatio,TransformationMode.FastTransformation);
 		    QPainter painter = new QPainter(image);
 		    page.mainFrame().render(painter);
 		    painter.end();
-		    String imageName= WebAppUtils.resolveImageName(imageAttribute, this.url.toString());
+		    String imageName= WebAppUtils.resolveImageStoragePath(imageAttribute, this.url.toString());
 		    logger.debug("Preparing image : "+ imageName);
 		    logger.info("Image prepared: "+image.save(imageName));
 		}

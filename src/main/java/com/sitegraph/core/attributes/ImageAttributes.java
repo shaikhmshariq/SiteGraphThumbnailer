@@ -12,7 +12,7 @@ public class ImageAttributes {
 
 	protected String imageSuffix=null;
 	protected QSize imageSize=null;
-	protected String absoluteImageFilePath = WebAppConstants.DEFAULT_IMAGE_ABSOLUTH_PATH;
+	protected String absoluteImageFilePath = WebAppConstants.IMAGE_ABSOLUTE_PATH;
 	
 	/**
 	 *  Class Default constructor
