@@ -74,7 +74,8 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 		try{
 		if(logger.isDebugEnabled())
 			logger.debug("Connecting to url : "+this.url);
-		QApplication.initialize(new String[] { });
+		if(QApplication.instance() == null)
+			QApplication.initialize(new String[] { });
 		page = new QWebPage(null);
 		page.mainFrame().load(new QNetworkRequest(this.url));
 		logger.debug("Page Loaded");
