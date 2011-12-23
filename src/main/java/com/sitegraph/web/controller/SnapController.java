@@ -3,6 +3,7 @@
  */
 package com.sitegraph.web.controller;
 
+import java.io.File;
 import java.util.Date;
 
 import javax.servlet.ServletContext;
@@ -38,16 +39,22 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/")
-	public String makeSnap(@RequestParam("URL") String url){
+	public String makeSnap(@RequestParam("URL") String url,@RequestParam(value="latest",required=false) boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			System.out.println(generatedImage);
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		String response = "redirect:/";
+		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
+		if(!latest && new File(WebAppUtils.resolveImageStoragePath(imageAttribute, url)).exists()){
+			String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+			response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}else{
+				if(thumbnailer.makeSnap())
+				{
+					String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+					response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+				}
+				
 		}
-		else
-			return "redirect:/";
+		return response;
 	}
 	
 	/**
@@ -57,18 +64,24 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}")
-	public String makeSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType){
+	public String makeSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType,@RequestParam(value="latest",required=false) boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
-		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
+		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
 		imageType = WebAppUtils.validateImageType(imageType);
-		attribute.setImageSuffix(imageType);
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		imageAttribute.setImageSuffix(imageType);
+		String response = "redirect:/";
+		
+		if(!latest && new File(WebAppUtils.resolveImageStoragePath(imageAttribute, url)).exists()){
+			String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+			response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}else{
+				if(thumbnailer.makeSnap())
+				{
+					String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+					response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+				}
 		}
-		else
-			return "redirect:/";
+		return response;
 	}
 	
 	/**
@@ -80,21 +93,27 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}/{imageWidth}/{imageHeight}")
-	public String makeSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight){
+	public String makeSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight,@RequestParam(value="latest",required=false) boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
-		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
-		QSize imageSize = attribute.getImageSize();
+		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
+		QSize imageSize = imageAttribute.getImageSize();
 		imageSize.setHeight(imageHeight);
 		imageSize.setWidth(imageWidth);
 		imageType = WebAppUtils.validateImageType(imageType);
-		attribute.setImageSuffix(imageType);
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
-		}
-		else
-			return "redirect:/";
+		imageAttribute.setImageSuffix(imageType);
+		
+		String response = "redirect:/";
+		if(!latest && new File(WebAppUtils.resolveImageStoragePath(imageAttribute, url)).exists()){
+			String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+			response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}else{
+				if(thumbnailer.makeSnap())
+				{
+					String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+					response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+				}
+			}
+		return response;
 	}
 	
 	/**
@@ -103,18 +122,23 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/")
-	public String makeMirrorSnap(@RequestParam("URL") String url){
+	public String makeMirrorSnap(@RequestParam("URL") String url,@RequestParam(value="latest",required=false) boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
-		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
-		attribute.setMirrored(true);
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			System.out.println(generatedImage);
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
-		}
-		else
-			return "redirect:/";
+		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
+		imageAttribute.setMirrored(true);
+		
+		String response = "redirect:/";
+		if(!latest && new File(WebAppUtils.resolveImageStoragePath(imageAttribute, url)).exists()){
+			String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+			response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}else{
+				if(thumbnailer.makeSnap())
+				{
+					String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+					response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+				}
+			}
+		return response;
 	}
 	
 	/**
@@ -124,19 +148,25 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/{imageType}")
-	public String makeMirrorSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType){
+	public String makeMirrorSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType,@RequestParam(value="latest",required=false) boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
-		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
-		attribute.setMirrored(true);
+		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
+		imageAttribute.setMirrored(true);
 		imageType = WebAppUtils.validateImageType(imageType);
-		attribute.setImageSuffix(imageType);
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
-		}
-		else
-			return "redirect:/";
+		imageAttribute.setImageSuffix(imageType);
+		
+		String response = "redirect:/";
+		if(!latest && new File(WebAppUtils.resolveImageStoragePath(imageAttribute, url)).exists()){
+			String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+			response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}else{
+				if(thumbnailer.makeSnap())
+				{
+					String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+					response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+				}
+			}
+		return response;
 	}
 	
 	/**
@@ -148,22 +178,28 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/{imageType}/{imageWidth}/{imageHeight}")
-	public String makeMirrorSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight){
+	public String makeMirrorSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight,@RequestParam(value="latest",required=false) boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
-		ImageAttributes attribute = thumbnailer.getImageAttributes().get(0);
-		attribute.setMirrored(true);
-		QSize imageSize = attribute.getImageSize();
+		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
+		imageAttribute.setMirrored(true);
+		QSize imageSize = imageAttribute.getImageSize();
 		imageSize.setHeight(imageHeight);
 		imageSize.setWidth(imageWidth);
 		imageType = WebAppUtils.validateImageType(imageType);
-		attribute.setImageSuffix(imageType);
-		if(thumbnailer.makeSnap())
-		{
-			String generatedImage =  WebAppUtils.resolveImageWebPath(thumbnailer.getImageAttributes().get(0), thumbnailer.getUrl().toString());
-			return "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		imageAttribute.setImageSuffix(imageType);
+		
+		String response = "redirect:/";
+		if(!latest && new File(WebAppUtils.resolveImageStoragePath(imageAttribute, url)).exists()){
+			String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+			response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+		}else{
+				if(thumbnailer.makeSnap())
+				{
+					String generatedImage =  WebAppUtils.resolveImageWebPath(imageAttribute, thumbnailer.getUrl().toString());
+					response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+				}
 		}
-		else
-			return "redirect:/";
+		return response;
 	}
 	
 	/**
