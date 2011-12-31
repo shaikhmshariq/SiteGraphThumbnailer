@@ -229,5 +229,5 @@ public class SnapController implements ServletContextAware{
 	 */
 	public ServletContext getServletContext(){
 		return this.servletContext;
-	}
+	} 
 }
