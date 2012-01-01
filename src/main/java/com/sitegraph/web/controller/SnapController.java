@@ -39,7 +39,7 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/")
-	public String makeSnap(@RequestParam("URL") String url,@RequestParam(value="latest",required=false) boolean latest){
+	public String makeSnap(@RequestParam("URL") String url,@RequestParam(value="latest",required=false,defaultValue="false") boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
 		String response = "redirect:/";
 		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
@@ -64,7 +64,7 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}")
-	public String makeSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType,@RequestParam(value="latest",required=false) boolean latest){
+	public String makeSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType,@RequestParam(value="latest",required=false,defaultValue="false") boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
 		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
 		imageType = WebAppUtils.validateImageType(imageType);
@@ -93,7 +93,7 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/makesnap/{imageType}/{imageWidth}/{imageHeight}")
-	public String makeSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight,@RequestParam(value="latest",required=false) boolean latest){
+	public String makeSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight,@RequestParam(value="latest",required=false,defaultValue="false") boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
 		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
 		QSize imageSize = imageAttribute.getImageSize();
@@ -122,7 +122,7 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/")
-	public String makeMirrorSnap(@RequestParam("URL") String url,@RequestParam(value="latest",required=false) boolean latest){
+	public String makeMirrorSnap(@RequestParam("URL") String url,@RequestParam(value="latest",required=false,defaultValue="false") boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
 		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
 		imageAttribute.setMirrored(true);
@@ -148,7 +148,7 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/{imageType}")
-	public String makeMirrorSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType,@RequestParam(value="latest",required=false) boolean latest){
+	public String makeMirrorSnapOfType(@RequestParam("URL") String url,@PathVariable String imageType,@RequestParam(value="latest",required=false,defaultValue="false") boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
 		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
 		imageAttribute.setMirrored(true);
@@ -178,7 +178,7 @@ public class SnapController implements ServletContextAware{
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/mirrorsnap/{imageType}/{imageWidth}/{imageHeight}")
-	public String makeMirrorSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight,@RequestParam(value="latest",required=false) boolean latest){
+	public String makeMirrorSnapOfSize(@RequestParam("URL") String url,@PathVariable String imageType,@PathVariable int imageWidth, @PathVariable int imageHeight,@RequestParam(value="latest",required=false,defaultValue="false") boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
 		ImageAttributes imageAttribute = thumbnailer.getImageAttributes().get(0);
 		imageAttribute.setMirrored(true);
