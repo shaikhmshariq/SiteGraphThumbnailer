@@ -19,29 +19,13 @@
           <target>1.6</target>
         </configuration>
       </plugin>
-    <plugin>
-			<groupId>net.sf.qtjambi</groupId>
-			<artifactId>qtjambi-maven-plugin</artifactId>
-			<executions>
-				<execution>
-					<id>qtjambi</id>
-					<goals>
-						<goal>generate</goal>
-					</goals>
-				</execution>
-			</executions>
-			<configuration>
-				<!-- Specifies where sources are. This parameter is MANDATORY -->
-				<sourcesDir>src/main/java</sourcesDir>
-				<!-- following parameters aren't mandatory, they use defaults as specified here
-				if not specified
-				<translationsDir>src/main/resources/translations</translationsDir>
-				<destinationDir>target/generated-sources/qtjambi</destinationDir>
-				-->
-				<!-- cause -noobsolete switch for lupdate -->
-				<noObsoleteTranslations>true</noObsoleteTranslations>
-			</configuration>
-		</plugin>
+	     <plugin>            
+	  		<groupId>org.apache.maven.plugins</groupId>
+	  		<artifactId>maven-war-plugin</artifactId>
+	  		<configuration>
+	    		<webXml>WebContent\WEB-INF\web.xml</webXml>        
+	  		</configuration>
+		</plugin>	 
 	</plugins>
 </build>
 <repositories>
