@@ -1,0 +1,27 @@
+.link {
+	margin-left: 10px;
+	color: #000000;
+	text-decoration: underline;
+}
+.header{
+	font-size: 14px;
+}
+h2{
+	font-size: 20px;
+}
+body {
+	background-color: #009900;
+	color: #FFFFFF;
+	font-family: verdana;
+	font-size: 12px;
+}
+.example{
+	font-size: 12px;
+}
+.mandatory{
+	font-size: 18px;
+	color: red;
+}
+.desc{
+	margin-left: 2px;
+}

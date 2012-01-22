@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="apis.xslt"?>
+<apis>
+
+<api>
+<uri method="GET">makesnap</uri>
+<params>
+      <param mandatory="true" type="string">
+		<name>URL</name>
+		<description>URL of webpage whose snap shot needs to be captured.</description>
+	  </param>
+      <param mandatory="false" type="boolean">
+		<name>latest</name>
+		<description>Specifies whether latest image should be captured and returned. Default it is false.</description>
+	  </param>
+</params>
+<example><![CDATA[makesnap/?URL=http://www.lasthorizon.co.cc&latest=true]]></example>
+<description>Creates image with default image type and size values.</description>
+</api>
+<api>
+<uri method="GET">makesnap/{imageType}</uri>
+<pathvariables>
+	<pathvariable type="string">
+		<name>imageType</name>
+		<description>Image type </description>
+		<possiblevalues>png, jpg</possiblevalues>
+	</pathvariable>
+</pathvariables>
+<params>
+      <param mandatory="true" type="string">
+		<name>URL</name>
+		<description>URL of webpage whose snap shot needs to be captured.</description>
+	  </param>
+      <param mandatory="false" type="boolean">
+		<name>latest</name>
+		<description>Specifies whether latest image should be captured and returned. Default it is false.</description>
+	  </param>
+</params>
+<example><![CDATA[jpg/?URL=http://www.lasthorizon.co.cc&latest=true]]></example>
+<description>Creates image with specified image type, but with default image size.</description>
+</api>
+<api>
+<uri method="GET">makesnap/{imageType}/{imageWidth}/{imageHeight}</uri>
+<pathvariables>
+	<pathvariable type="string">
+		<name>imageType</name>
+		<description>Image type </description>
+		<possiblevalues>png, jpg</possiblevalues>
+	</pathvariable>
+	<pathvariable type="int">
+		<name>imageWidth</name>
+		<description>Width of image in pixel </description>
+		<possiblevalues>800, 1024</possiblevalues>
+	</pathvariable>
+	<pathvariable type="int">
+		<name>imageHeight</name>
+		<description>Height of image in pixel </description>
+		<possiblevalues>800, 1024</possiblevalues>
+	</pathvariable>
+</pathvariables>
+<params>
+      <param mandatory="true" type="string">
+		<name>URL</name>
+		<description>URL of webpage whose snap shot needs to be captured.</description>
+	  </param>
+      <param mandatory="false" type="boolean">
+		<name>latest</name>
+		<description>Specifies whether latest image should be captured and returned. Default it is false.</description>
+	  </param>
+</params>
+<example><![CDATA[jpg/800/600/?URL=http://www.lasthorizon.co.cc&latest=true]]></example>
+<description>Creates image with specified image attributes type, width and height.</description>
+</api>
+<api>
+<uri method="GET">mirrorsnap</uri>
+<params>
+      <param mandatory="true" type="string">
+		<name>URL</name>
+		<description>URL of webpage whose snap shot needs to be captured.</description>
+	  </param>
+      <param mandatory="false" type="boolean">
+		<name>latest</name>
+		<description>Specifies whether latest image should be captured and returned. Default it is false.</description>
+	  </param>
+</params>
+<example><![CDATA[makesnap/?URL=http://www.lasthorizon.co.cc&latest=true]]></example>
+<description>Creates mirror image with default image type and size values.</description>
+</api>
+<api>
+<uri method="GET">mirrorsnap/{imageType}</uri>
+<pathvariables>
+	<pathvariable type="string">
+		<name>imageType</name>
+		<description>Image type </description>
+		<possiblevalues>png, jpg</possiblevalues>
+	</pathvariable>
+</pathvariables>
+<params>
+      <param mandatory="true" type="string">
+		<name>URL</name>
+		<description>URL of webpage whose snap shot needs to be captured.</description>
+	  </param>
+      <param mandatory="false" type="boolean">
+		<name>latest</name>
+		<description>Specifies whether latest image should be captured and returned. Default it is false.</description>
+	  </param>
+</params>
+<example><![CDATA[jpg/?URL=http://www.lasthorizon.co.cc&latest=true]]></example>
+<description>Creates mirror image with specified image type, but with default image size.</description>
+</api>
+<api>
+<uri method="GET">mirrorsnap/{imageType}/{imageWidth}/{imageHeight}</uri>
+<pathvariables>
+	<pathvariable type="string">
+		<name>imageType</name>
+		<description>Image type </description>
+		<possiblevalues>png, jpg</possiblevalues>
+	</pathvariable>
+	<pathvariable type="int">
+		<name>imageWidth</name>
+		<description>Width of image in pixel </description>
+		<possiblevalues>800, 1024</possiblevalues>
+	</pathvariable>
+	<pathvariable type="int">
+		<name>imageHeight</name>
+		<description>Height of image in pixel </description>
+		<possiblevalues>800, 1024</possiblevalues>
+	</pathvariable>
+</pathvariables>
+<params>
+      <param mandatory="true" type="string">
+		<name>URL</name>
+		<description>URL of webpage whose snap shot needs to be captured.</description>
+	  </param>
+      <param mandatory="false" type="boolean">
+		<name>latest</name>
+		<description>Specifies whether latest image should be captured and returned. Default it is false.</description>
+	  </param>
+</params>
+<example><![CDATA[jpg/800/600/?URL=http://www.lasthorizon.co.cc&latest=true]]></example>
+<description>Creates mirror image with specified image attributes type, width and height.</description>
+</api>
+</apis>
