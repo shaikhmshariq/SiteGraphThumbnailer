@@ -2,4 +2,4 @@ This application is published under GPL license for more details check GPL-LICEN
 This application uses QT - Jambi. http://www.qt-jambi.org
 Maven is used for dependency management, QT - Jambi dependency should be resolved based on your operating system.
 For more information on qt-jambi maven plugin settings please visit http://qt-jambi.org/users/maven-repository/.
-Check project page http://shaikhmshariq.github.com/SiteGraphThumbnailer/ for more details.
+Check project page http://shaikhmshariq.github.com/SiteGraphThumbnailer/ for more details. 
