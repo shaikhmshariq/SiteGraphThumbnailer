@@ -20,6 +20,7 @@
   }]]>
   </script>
   <link href="./apis.css" rel="stylesheet" type="text/css" />
+  @import url(http://fonts.googleapis.com/css?family=Quantico);
   </head>
   <body>
   <xsl:variable name="imagesURI">http://HOST/SiteGraphThumbnailer/images</xsl:variable>
