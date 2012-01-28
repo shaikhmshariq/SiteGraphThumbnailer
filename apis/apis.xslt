@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="/">
@@ -19,8 +17,8 @@
 		}
   }]]>
   </script>
-  <link href="./apis.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Quantico">
+  <link href="./apis.css" rel="stylesheet" type="text/css" ></link>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Quantico"></link>
   </head>
   <body>
   <xsl:variable name="imagesURI">http://HOST/SiteGraphThumbnailer/images</xsl:variable>
@@ -95,4 +93,3 @@
   </html>
 </xsl:template>
 </xsl:stylesheet>
-
