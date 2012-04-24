@@ -7,14 +7,14 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.sitegraph.core.FileSystemThumbnailer;
 import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.JPEGImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
+import com.sitegraph.core.fs.ImageMaker;
 import com.sitegraph.core.util.Constants;
 import com.trolltech.qt.core.QSize;
 
-public class TestFileSystemThumbnailer {
+public class TestImageMaker {
 
 	private static final String url = "http://www.shaikhmshariq.wordpress.com";
 	private static final String IMAGE_PATH = "C:\\temp\\Image";
@@ -24,19 +24,19 @@ public class TestFileSystemThumbnailer {
 	@Test
 	public void testMakeSnap() {
 		 //will create image in current directory from where this application is running
-		  assertTrue(new FileSystemThumbnailer(url).makeSnap());
+		  assertTrue(new ImageMaker(url).makeSnap());
 	}
 
 	@Test
 	public void testGetUrl(){
-		FileSystemThumbnailer thumbnailer = new FileSystemThumbnailer(url);
+		ImageMaker thumbnailer = new ImageMaker(url);
 		assertTrue(url.equals(thumbnailer.getUrl().toString()));
 		assertTrue(thumbnailer.makeSnap());
 	}
 
 	@Test
 	public void testPNGImageAttributes(){
-		FileSystemThumbnailer thumbnailer = new FileSystemThumbnailer(url,pngImageAttributes);
+		ImageMaker thumbnailer = new ImageMaker(url,pngImageAttributes);
 		assertTrue(thumbnailer.getImageAttributes().size() == 1);
 		ImageAttributes attributes = thumbnailer.getImageAttributes().get(0);
 		assertNotNull(attributes);
@@ -53,7 +53,7 @@ public class TestFileSystemThumbnailer {
 		  imageAttributes.add(new JPEGImageAttributes(IMAGE_PATH + "_JPEG"));
 		  imageAttributes.add(new JPEGImageAttributes(Q_800x600,IMAGE_PATH + "_JPEG_800_600"));
 		  imageAttributes.add(new PNGImageAttributes(Q_800x600,IMAGE_PATH + "_PNG_800_600"));
-		  FileSystemThumbnailer thumbnailer = new FileSystemThumbnailer(url,imageAttributes);
+		  ImageMaker thumbnailer = new ImageMaker(url,imageAttributes);
 		  //TODO add assert statement to check each image attribute in list
 		  assertTrue(thumbnailer.makeSnap());
 	}

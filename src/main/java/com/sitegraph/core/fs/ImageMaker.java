@@ -1,13 +1,14 @@
 /**
  *  Main class for loading HTML content of Web page, Generate images and store it on local file system.
  */
-package com.sitegraph.core;
+package com.sitegraph.core.fs;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.sitegraph.core.SiteGraphThumbnailer;
 import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
 import com.sitegraph.core.util.Constants;
@@ -25,20 +26,20 @@ import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.network.QNetworkRequest;
 import com.trolltech.qt.webkit.QWebPage;
 
-public class FileSystemThumbnailer extends SiteGraphThumbnailer {
+public class ImageMaker extends SiteGraphThumbnailer {
 
-	private static final Logger logger = Logger.getLogger(FileSystemThumbnailer.class);
+	private static final Logger logger = Logger.getLogger(ImageMaker.class);
 	
 	/*
 	 * Default constructor forcefully added for aop scoped auto proxy 
 	 */
-	public FileSystemThumbnailer(){
+	public ImageMaker(){
 		super();
 	}
 	/**
 	 * @param url URL of Web Page in String
 	 */
-	public FileSystemThumbnailer(String url){
+	public ImageMaker(String url){
 		super(null,url,Arrays.asList(new ImageAttributes[]{ new PNGImageAttributes()}));
 	}
 	
@@ -46,7 +47,7 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 	 * @param url URL of Web Page in String
 	 * @param imageAttributes object of ImageAttribute Class to provide specific image related information
 	 */
-	public FileSystemThumbnailer(String url,ImageAttributes imageAttribute){
+	public ImageMaker(String url,ImageAttributes imageAttribute){
 		super(null,url,Arrays.asList(imageAttribute));
 	}
 	
@@ -54,7 +55,7 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 	 * @param url URL of Web Page in String
 	 * @param imageAttributes List of ImageAttribute Class to provide specific image related information
 	 */
-	public FileSystemThumbnailer(String url,List<ImageAttributes> imageAttributes){
+	public ImageMaker(String url,List<ImageAttributes> imageAttributes){
 		super(null,url,imageAttributes);
 	}
 	
@@ -63,7 +64,7 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 	 * @param url URL of Web Page in String
 	 * @param imageAttributes object of ImageAttribute Class to provide specific image related information
 	 */
-	public FileSystemThumbnailer(QObject obj,String url,List<ImageAttributes> imageAttributes){
+	public ImageMaker(QObject obj,String url,List<ImageAttributes> imageAttributes){
 		super(obj,url,imageAttributes);
 	}
 
@@ -92,15 +93,18 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 		}
 		return true;
 	}
+	@SuppressWarnings("unused")
 	private void loadStarted(){
 		logger.debug("Part in Started");
 	}
+	@SuppressWarnings("unused")
 	private void loadProgress(){
 		logger.debug("Part in Progress");
 	}
 	/**
 	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
 	 */
+	@SuppressWarnings("unused")
 	private boolean loadDone() {
 		logger.debug("Loading for page url : "+ this.url);
 		for(ImageAttributes imageAttribute: this.imageAttributes){
@@ -124,17 +128,16 @@ public class FileSystemThumbnailer extends SiteGraphThumbnailer {
 	    finished.emit();
 	    return true;
     }
-	
 	/*
 	public static void main(String[] args) {
-		  new FileSystemThumbnailer("http://www.google.com").makeSnap();
-		  new FileSystemThumbnailer("http://www.google.com",new PNGImageAttributes()).makeSnap();
-		  new FileSystemThumbnailer("http://www.google.com",new PNGImageAttributes("C:\\temp\\new")).makeSnap();
+		  new ImageMaker("http://www.google.com").makeSnap();
+		  new ImageMaker("http://www.google.com",new PNGImageAttributes()).makeSnap();
+		  new ImageMaker("http://www.google.com",new PNGImageAttributes("C:\\temp\\new")).makeSnap();
 		  List<ImageAttributes> imageAttributes = new ArrayList<ImageAttributes>();
 		  imageAttributes.add(new JPEGImageAttributes("C:\\temp\\JPEGImage"));
 		  imageAttributes.add(new JPEGImageAttributes(new QSize(800,600),"C:\\temp\\JPEGImage_800_600"));
 		  imageAttributes.add(new PNGImageAttributes(new QSize(800,600),"C:\\temp\\PNGImage_800_600"));
-		  new FileSystemThumbnailer("http://www.facebook.com",imageAttributes).makeSnap();
+		  new ImageMaker("http://www.facebook.com",imageAttributes).makeSnap();
 	}
 	*/
 }
