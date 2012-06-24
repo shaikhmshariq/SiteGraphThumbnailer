@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 
-import com.sitegraph.core.SiteGraphThumbnailer;
 import com.sitegraph.core.attributes.ImageAttributes;
+import com.sitegraph.core.image.ImageThumbnailer;
 import com.sitegraph.core.util.WebAppConstants;
 import com.sitegraph.core.util.WebAppUtils;
 import com.trolltech.qt.core.QSize;
@@ -30,7 +30,7 @@ import com.trolltech.qt.core.QUrl;
 public class SnapController implements ServletContextAware{
 
 	@Autowired
-	private SiteGraphThumbnailer thumbnailer;
+	private ImageThumbnailer thumbnailer;
 	private ServletContext servletContext;
 	
 	/**
@@ -211,7 +211,7 @@ public class SnapController implements ServletContextAware{
 	@ResponseBody()
 	public String homePage(HttpServletResponse response){
 		response.setContentType("text/html");
-		return "<title>SiteGraphThumbnailer</title><h1>Welcome to SiteGraph</h1>Soon some meaningful contents will be here. ";
+		return "<title>ImageThumbnailer</title><h1>Welcome to SiteGraph</h1>Soon some meaningful contents will be here. ";
 	}
 
 	/* (non-Javadoc)

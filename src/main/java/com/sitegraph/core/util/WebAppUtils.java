@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.UUID;
 
 import com.sitegraph.core.attributes.ImageAttributes;
+import com.sitegraph.core.attributes.pdf.PdfAttributes;
 
 public class WebAppUtils {
 
@@ -31,6 +32,21 @@ public class WebAppUtils {
 	 */
 	public static String resolveImageWebPath(ImageAttributes imageAttributes,String inputUrl){
 		return "/"+ WebAppConstants.DEFAULT_IMAGE_ABSOLUTE_PATH + getUniquePath(inputUrl) + WebAppConstants.DEFAULT_IMAGE_PREFIX + imageAttributes.getImageSize().width() + "x" + imageAttributes.getImageSize().height() + imageAttributes.getImageSuffix();
+	}
+	/*
+	 * This method is used to resolve image name based on its attributes.
+	 */
+	public static String resolvePdfStoragePath(PdfAttributes pdfAttributes,String inputUrl){
+		String pdfFilepath = pdfAttributes.getAbsolutePdfFilePath()+ getUniquePath(inputUrl);
+		File domainDir = new File(pdfFilepath);
+		domainDir.mkdir();
+		return  pdfFilepath + WebAppConstants.DEFAULT_PDF_PREFIX + pdfAttributes.getPdfTemplateSize()+Constants.PDF_FILE_SUFFIX;
+	}
+	/*
+	 * This method is used to resolve image relative path of server.
+	 */
+	public static String resolvePdfWebPath(PdfAttributes pdfAttributes,String inputUrl){
+		return "/"+ WebAppConstants.DEFAULT_PDF_ABSOLUTE_PATH + getUniquePath(inputUrl) + WebAppConstants.DEFAULT_PDF_PREFIX + pdfAttributes.getPdfTemplateSize() + Constants.PDF_FILE_SUFFIX;
 	}
 	/*
 	 * This method is used to validate Image Type

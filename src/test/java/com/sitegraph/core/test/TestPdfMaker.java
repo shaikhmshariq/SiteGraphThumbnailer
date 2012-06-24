@@ -3,11 +3,11 @@
  */
 package com.sitegraph.core.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.sitegraph.core.fs.PdfMaker;
+import com.sitegraph.core.pdf.impl.PdfThumbnailerImpl;
 
 /**
  * @author Mohammed
@@ -15,15 +15,14 @@ import com.sitegraph.core.fs.PdfMaker;
  */
 public class TestPdfMaker {
 
-	private static final String url = "http://www.shaikhmshariq.wordpress.com";
-	private static final String IMAGE_PATH = "C:\\temp\\Image";
+	private static final String url = "http://www.google.com";
 	
 	/**
-	 * Test method for {@link com.sitegraph.core.fs.PdfMaker#makeSnap()}.
+	 * Test method for {@link com.sitegraph.core.pdf.impl.PdfThumbnailerImpl#makePdf()}.
 	 */
 	@Test
 	public void testMakeSnap() {
-		assertTrue(new PdfMaker(url).makeSnap());
+		assertTrue(new PdfThumbnailerImpl(url).makePdf());
 	}
 
 }

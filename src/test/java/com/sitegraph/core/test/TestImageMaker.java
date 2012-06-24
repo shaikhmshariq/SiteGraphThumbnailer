@@ -10,13 +10,13 @@ import org.junit.Test;
 import com.sitegraph.core.attributes.ImageAttributes;
 import com.sitegraph.core.attributes.JPEGImageAttributes;
 import com.sitegraph.core.attributes.PNGImageAttributes;
-import com.sitegraph.core.fs.ImageMaker;
+import com.sitegraph.core.image.impl.ImageThumbnailerImpl;
 import com.sitegraph.core.util.Constants;
 import com.trolltech.qt.core.QSize;
 
 public class TestImageMaker {
 
-	private static final String url = "http://www.shaikhmshariq.wordpress.com";
+	private static final String url = "http://localhost:8080/ext";
 	private static final String IMAGE_PATH = "C:\\temp\\Image";
 	private static final QSize Q_800x600 = new QSize(800,600);
 	private static final ImageAttributes pngImageAttributes = new PNGImageAttributes(IMAGE_PATH + "_PNG");
@@ -24,19 +24,19 @@ public class TestImageMaker {
 	@Test
 	public void testMakeSnap() {
 		 //will create image in current directory from where this application is running
-		  assertTrue(new ImageMaker(url).makeSnap());
+		  assertTrue(new ImageThumbnailerImpl(url).makeSnap());
 	}
 
 	@Test
 	public void testGetUrl(){
-		ImageMaker thumbnailer = new ImageMaker(url);
+		ImageThumbnailerImpl thumbnailer = new ImageThumbnailerImpl(url);
 		assertTrue(url.equals(thumbnailer.getUrl().toString()));
 		assertTrue(thumbnailer.makeSnap());
 	}
 
 	@Test
 	public void testPNGImageAttributes(){
-		ImageMaker thumbnailer = new ImageMaker(url,pngImageAttributes);
+		ImageThumbnailerImpl thumbnailer = new ImageThumbnailerImpl(url,pngImageAttributes);
 		assertTrue(thumbnailer.getImageAttributes().size() == 1);
 		ImageAttributes attributes = thumbnailer.getImageAttributes().get(0);
 		assertNotNull(attributes);
@@ -53,7 +53,7 @@ public class TestImageMaker {
 		  imageAttributes.add(new JPEGImageAttributes(IMAGE_PATH + "_JPEG"));
 		  imageAttributes.add(new JPEGImageAttributes(Q_800x600,IMAGE_PATH + "_JPEG_800_600"));
 		  imageAttributes.add(new PNGImageAttributes(Q_800x600,IMAGE_PATH + "_PNG_800_600"));
-		  ImageMaker thumbnailer = new ImageMaker(url,imageAttributes);
+		  ImageThumbnailerImpl thumbnailer = new ImageThumbnailerImpl(url,imageAttributes);
 		  //TODO add assert statement to check each image attribute in list
 		  assertTrue(thumbnailer.makeSnap());
 	}
