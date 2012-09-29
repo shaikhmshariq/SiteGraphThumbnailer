@@ -25,7 +25,7 @@ import com.trolltech.qt.core.QUrl;
 @RequestMapping("/pdf")
 public class PdfController implements ServletContextAware{
 
-	@Autowired
+	@Autowired()
 	private PdfThumbnailer thumbnailer;
 	private ServletContext servletContext;
 	
@@ -37,6 +37,7 @@ public class PdfController implements ServletContextAware{
 	@RequestMapping(method=RequestMethod.GET, value="/makepdf/")
 	public String makePdf(@RequestParam("URL") String url,@RequestParam(value="latest",required=false,defaultValue="false") boolean latest){
 		thumbnailer.setUrl(new QUrl(url));
+		System.out.println("Thubmbnailer is : "+thumbnailer);
 		String response = "redirect:/";
 		PdfAttributes pdfAttribute = thumbnailer.getPdfAttributes().get(0);
 		if(!latest && new File(WebAppUtils.resolvePdfStoragePath(pdfAttribute, url)).exists()){
@@ -58,19 +59,22 @@ public class PdfController implements ServletContextAware{
 	 * @param url URL of web page.
 	 * @return
 	 */
-	/*@RequestMapping(method=RequestMethod.GET, value="/makepdf/")
-	public String makePdf(@RequestParam("html") String html){
+	@RequestMapping(method=RequestMethod.POST, value="/makepdf/")
+	public String makePdf(@RequestParam("HTML") String html){
+		long handler = new Date().getTime();
 		thumbnailer.setHtml(html);
+		thumbnailer.setUrl(new QUrl(String.valueOf(handler)));
 		String response = "redirect:/";
+		
 		PdfAttributes pdfAttribute = thumbnailer.getPdfAttributes().get(0);
-		if(thumbnailer.makePdf())
+		if(thumbnailer.makePdfFromHTML(String.valueOf(handler)))
 		{
-			String generatedImage =  WebAppUtils.resolvePdfWebPath(pdfAttribute, thumbnailer.getUrl().toString());
-			response = "redirect:/"+generatedImage+"?rand="+new Date().getTime();
+			String generatedImage =  WebAppUtils.resolvePdfWebPath(pdfAttribute, String.valueOf(handler));
+			response = "redirect:/"+generatedImage+"?rand="+handler;
 		}	
 		
 		return response;
-	}*/
+	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.context.ServletContextAware#setServletContext(javax.servlet.ServletContext)

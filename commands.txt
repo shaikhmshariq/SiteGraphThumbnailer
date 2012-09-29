@@ -1,0 +1,3 @@
+rmiregistry.exe -J-classpath -J"c:\Users\Mohammed\Desktop\test.jar"
+java -jar test.jar
+java -Djava.security.policy=D://t.policy -classpath test.jar com.sitegraph.core.test.ThumbnailerTest 127.0.0.1 http://www.soft32.com

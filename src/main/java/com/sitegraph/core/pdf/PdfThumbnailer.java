@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.sitegraph.core.attributes.pdf.PdfAttributes;
 import com.sitegraph.core.store.IStore;
 import com.sitegraph.core.util.Constants;
+import com.trolltech.qt.QSignalEmitter.Signal1;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QUrl;
 import com.trolltech.qt.webkit.QWebPage;
@@ -22,6 +23,7 @@ public abstract class PdfThumbnailer extends QObject{
 	/**
 	 * @param args
 	 */
+	public Signal0 signal = new Signal0();
 	protected QWebPage page;
 	protected QUrl url;
 	protected String html;
@@ -96,7 +98,7 @@ public abstract class PdfThumbnailer extends QObject{
 	/**
 	 * Method to load html content from provided url   
 	 */
-	//public abstract boolean makePdfFromHTML(String html,String handler);
+	public abstract boolean makePdfFromHTML(String handler);
 	/**
 	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
 	 */

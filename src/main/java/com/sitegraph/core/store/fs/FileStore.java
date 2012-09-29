@@ -50,6 +50,27 @@ public class FileStore implements IStore {
 	    return pdfFileName;
 	}
 
+	/*@Override
+	public String savePdf(String handler, QWebPage page,PdfAttributes pdfAttributes) {
+		page.mainFrame().setScrollBarPolicy(Orientation.Horizontal, ScrollBarPolicy.ScrollBarAlwaysOff);
+		page.mainFrame().setScrollBarPolicy(Orientation.Vertical, ScrollBarPolicy.ScrollBarAlwaysOff);
+		page.setViewportSize(pdfAttributes.getPageSize());
+		logger.debug("Load Finished");
+		QPrinter printer = new QPrinter();
+		printer.setFullPage(true);
+		printer.setOrientation(pdfAttributes.getOrientation());
+		printer.setPageSize(pdfAttributes.getPdfTemplateSize());
+		printer.setResolution(pdfAttributes.getResolution());
+		printer.setOutputFormat(QPrinter.OutputFormat.PdfFormat);
+		String pdfFileName= WebAppUtils.resolvePdfStoragePath(pdfAttributes, handler);
+		printer.setOutputFileName(pdfFileName);
+	    QPainter painter = new QPainter(printer);
+	    page.mainFrame().render(painter);
+	    painter.end();
+	    logger.debug("pdf created at location : "+pdfFileName);
+	    return pdfFileName;
+	}*/
+
 	
 
 }

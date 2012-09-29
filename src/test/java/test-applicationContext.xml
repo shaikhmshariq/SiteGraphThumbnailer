@@ -10,24 +10,22 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-<bean class="com.sitegraph.core.image.impl.ImageThumbnailerImpl" id="imageThumbnailer"  scope="request" lazy-init="false" >
+<!-- <bean class="com.sitegraph.core.image.impl.ImageThumbnailerImpl" id="imageThumbnailer"  scope="prototype" lazy-init="false" >
 	<constructor-arg>
 		<util:constant static-field="com.sitegraph.core.util.Constants.DEFAULT_URL"/>
 	</constructor-arg>
-	<aop:scoped-proxy/>
+</bean>
+ -->
+ <bean class="Dummy" init-method="start" scope="singleton"  id="qApplicationWrap" name="qApplicationWrap" >
+ <property name="daemon" value="true"></property>
+ </bean>
+ 
+<bean class="com.sitegraph.core.pdf.PdfThumbnailer" depends-on="qApplicationWrap" factory-bean="qApplicationWrap" factory-method="getPdfThumbnailer"  scope="prototype" lazy-init="true" >
+	
 </bean>
 
-<bean class="com.sitegraph.core.pdf.impl.PdfThumbnailerImpl" id="pdfThumbnailer" depends-on="QAppFactory"  scope="request" lazy-init="false" >
-	<constructor-arg>
-		<util:constant static-field="com.sitegraph.core.util.Constants.DEFAULT_URL"/>
-	</constructor-arg>
-	<property name="store" ref="store"></property>
-	<aop:scoped-proxy/>
-</bean>
-
-<bean class="com.sitegraph.core.store.fs.FileStore" scope="request" id="store" name="fileStore" lazy-init="false" >
+<bean class="com.sitegraph.core.store.fs.FileStore" scope="prototype" id="store" name="fileStore" lazy-init="false" >
 </bean>
 
 
-<bean class="Dummy" name="QAppFactory" lazy-init="false" id="QAppFactory" scope="singleton"></bean>
 </beans>

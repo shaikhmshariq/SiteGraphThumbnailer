@@ -32,4 +32,13 @@ public interface IStore {
 	 * @return Path to the resource to be accessed by controller. 
 	 */
 	public String savePdf(QUrl url,QWebPage page,PdfAttributes pdfAttributes);
+	
+	/*
+	 * Save pdf file in the server file system.
+	 * @param handler Handler to indicate file name to be stored.
+	 * @param page QWebPage object which holds HTML content from specified url.
+	 * @param pdf attributes
+	 * @return Path to the resource to be accessed by controller. 
+	 */
+	//public String savePdf(String handler,QWebPage page,PdfAttributes pdfAttributes);
 }
