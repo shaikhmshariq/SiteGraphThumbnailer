@@ -204,7 +204,7 @@ public class WebFrameInThread2 extends QLabel implements Thumbnailer{
         //QApplication.exec();
         System.out.println("J");*/
     	QApplication.initialize(args);
-    	System.setProperty("java.security.policy","file:///D://t.policy");
+    	//System.setProperty("java.security.policy","file:///D://t.policy");
     	if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }

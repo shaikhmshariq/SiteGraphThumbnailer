@@ -21,7 +21,7 @@ public class ThumbnailerTest {
 	        }
 	        try {
 	            String name = "Compute";
-	            System.setProperty("java.security.policy","file:///D://t.policy");
+	            //System.setProperty("java.security.policy","file:///D://t.policy");
 	            Registry registry = LocateRegistry.getRegistry(args[0]);
 	            Thumbnailer comp = (Thumbnailer) registry.lookup(name);
 	            File f =comp.doPrint(args[1]);
