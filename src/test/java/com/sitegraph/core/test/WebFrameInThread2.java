@@ -4,18 +4,13 @@
 package com.sitegraph.core.test;
 
 
-import java.io.DataInputStream;
+
 import java.io.File;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.core.QEventLoop;
@@ -29,75 +24,14 @@ import com.trolltech.qt.webkit.QWebPage;
 
 public class WebFrameInThread2 extends QLabel implements Thumbnailer{
 	private static String url;
-	private static List<String> urls = new ArrayList<String>(); 
-	private static int counter=0;
-	private ServerSocket socket;
+	
+	
 	public static String getNextUrl(){
-		/*if(counter < urls.size()){
-			return urls.get(counter++);
-		}else
-			return null;*/
+		
 		return url;
 	}
-	/*public class Main extends QObject implements Runnable{
-		
-		public Main(){
-			
-		}
-		@Override
-		public void run() {
-				String url =getNextUrl();
-				if(url !=null){
-					 MyRunnable runnable = new MyRunnable(url);
-				     QThread thread = new QThread(runnable);
-				     runnable.moveToThread(thread);
-				     thread.setDaemon(true);
-				     thread.start();
-				     try {
-						Thread.sleep(10000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-		}
-		
-	} */
-    public WebFrameInThread2() {
+	public WebFrameInThread2() {
     	super();
-    	/*Thread t = new Thread(){
-    		public void run(){
-    	
-    			try {
-    				socket = new ServerSocket(10000);
-    				System.out.println("Listening on port "+socket.getLocalPort());
-    				while(true){
-						Socket skt =socket.accept();
-						DataInputStream input = new DataInputStream(skt.getInputStream());
-						String url = input.readLine();
-						input.close();
-						 MyRunnable runnable = new MyRunnable(url);
-					     QThread thread = new QThread(runnable);
-					     runnable.moveToThread(thread);
-					     //thread.setDaemon(true);
-					     thread.start();
-					     //while(runnable.getFile()==null){
-					    //	 Thread.sleep(2000);
-					     //}
-					     //System.out.println(runnable.getFile().getAbsolutePath());
-    				}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}		
-    		
-    	};
-    	t.start();
-    	*/
     }
     public File doPrint(String url) throws RemoteException{
     	 MyRunnable runnable = new MyRunnable(url);
@@ -108,7 +42,6 @@ public class WebFrameInThread2 extends QLabel implements Thumbnailer{
 	    	 try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	     }
@@ -123,7 +56,6 @@ public class WebFrameInThread2 extends QLabel implements Thumbnailer{
         private QEventLoop loop;
         private QUrl url;
         private File file;
-        private boolean flag;
         public MyRunnable(String url) {
             page = new QWebPage(this);
             this.url= new QUrl(url);
@@ -136,10 +68,7 @@ public class WebFrameInThread2 extends QLabel implements Thumbnailer{
                 page.loadProgress.connect(this,  "loadProgress(int)");
                 page.mainFrame().load(this.url);
                 System.out.println("Loaded ");
-                /*while(!flag){
-                	QApplication.processEvents();
-                	Thread.sleep(1000);
-                }*/
+               
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -159,21 +88,17 @@ public class WebFrameInThread2 extends QLabel implements Thumbnailer{
 	            String fileName=url.toString().replaceAll("//","-").replaceAll(":","-" )+new Date().getTime()+".pdf";
 	            printer.setOutputFileName(fileName);
 	            printer.setOutputFormat(QPrinter.OutputFormat.PdfFormat);
+	            //QImage w = new QImage(page.viewportSize(), QImage.Format.Format_ARGB32);
 	            
 	            QPainter painter = new QPainter();
 	            painter.begin(printer);
 	            page.mainFrame().render(painter);
 	            painter.end();
+	            //w.save(fileName);
             	System.out.println("Load Finished");
 	            setFile(new File(fileName));
 	            loop.exit();
-	            flag=true;
-	            QApplication.invokeLater(new Runnable() {
-	                public void run() {
-	                    //close();
-	                }
-	            });            
-	        
+        
         }
 
 		public File getFile() {
@@ -203,6 +128,8 @@ public class WebFrameInThread2 extends QLabel implements Thumbnailer{
         //t.start();
         //QApplication.exec();
         System.out.println("J");*/
+    	//if(Utilities.operatingSystem.equals(OperatingSystem.Linux))
+    	//	QApplication.syncX();
     	QApplication.initialize(args);
     	//System.setProperty("java.security.policy","file:///D://t.policy");
     	if (System.getSecurityManager() == null) {

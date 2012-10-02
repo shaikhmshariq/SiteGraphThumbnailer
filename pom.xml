@@ -3,7 +3,7 @@
   <groupId>SiteGraphThumbnailer</groupId>
   <artifactId>SiteGraphThumbnailer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <properties>
   	<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
   </properties>
@@ -23,9 +23,35 @@
 	  		<groupId>org.apache.maven.plugins</groupId>
 	  		<artifactId>maven-war-plugin</artifactId>
 	  		<configuration>
-	    		<webXml>WebContent\WEB-INF\web.xml</webXml>        
+	    		<webXml>WebContent/WEB-INF/web.xml</webXml>        
 	  		</configuration>
 		</plugin>	 
+		<plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>com.sitegraph.core.test.WebFrameInThread2</mainClass>
+                    </manifest>
+                </archive>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+            </configuration>
+        </plugin>
+	<plugin>
+      <artifactId>maven-jar-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>test-jar</id>
+          <phase>package</phase>
+          <goals>
+            <goal>test-jar</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
 	</plugins>
 </build>
 <repositories>
