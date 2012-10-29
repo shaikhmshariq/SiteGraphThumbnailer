@@ -3,41 +3,41 @@
  */
 package com.sitegraph.core.pdf.impl;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.sitegraph.core.attributes.pdf.PdfAttributes;
-import com.sitegraph.core.pdf.PdfThumbnailer;
-import com.sitegraph.core.store.IStore;
+import com.sitegraph.core.pdf.IPdfThumbnailer;
+import com.trolltech.qt.QThread;
+import com.trolltech.qt.core.QEventLoop;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QUrl;
-import com.trolltech.qt.gui.QApplication;
-import com.trolltech.qt.network.QNetworkRequest;
+import com.trolltech.qt.gui.QPainter;
+import com.trolltech.qt.gui.QPrinter;
 import com.trolltech.qt.webkit.QWebPage;
 
-public class PdfThumbnailerImpl extends PdfThumbnailer {
+public class PdfThumbnailerImpl implements IPdfThumbnailer {
 
 	private static final Logger logger = Logger.getLogger(PdfThumbnailerImpl.class);
+	protected QWebPage page;
+	protected QUrl url;
+	protected List<PdfAttributes> pdfAttributes=null;
 	
-	public IStore store;
-	private Thread mainThread;
-	public PdfThumbnailerImpl(Thread thread){
-		this.mainThread=thread;
-	}
+	
 	/*
 	 * Default constructor forcefully added for aop scoped auto proxy 
 	 */
 	public PdfThumbnailerImpl(){
 		super();
-		signal.connect(this,"makePdfFromUrl()");
 	}
 	/**
 	 * @param url URL of Web Page in String
 	 */
 	public PdfThumbnailerImpl(String url){
-		super(null,url,Arrays.asList(new PdfAttributes[]{ new PdfAttributes()}));
+		this.url= new QUrl(url);
 	}
 	
 	/**
@@ -45,7 +45,8 @@ public class PdfThumbnailerImpl extends PdfThumbnailer {
 	 * @param imageAttributes object of ImageAttribute Class to provide specific image related information
 	 */
 	public PdfThumbnailerImpl(String url,PdfAttributes pdfAttributes){
-		super(null,url,Arrays.asList(pdfAttributes));
+		this.url= new QUrl(url);
+		this.pdfAttributes=Arrays.asList(new PdfAttributes []{pdfAttributes});
 	}
 	
 	/**
@@ -53,92 +54,97 @@ public class PdfThumbnailerImpl extends PdfThumbnailer {
 	 * @param imageAttributes List of ImageAttribute Class to provide specific image related information
 	 */
 	public PdfThumbnailerImpl(String url,List<PdfAttributes> pdfAttributes){
-		super(null,url,pdfAttributes);
+		this.url= new QUrl(url);
+		this.pdfAttributes=pdfAttributes;
 	}
 	
 	/**
-	 * @param object object of QObject class 
-	 * @param url URL of Web Page in String
-	 * @param imageAttributes object of ImageAttribute Class to provide specific image related information
+	 * Method to load html content from provided url   
 	 */
-	public PdfThumbnailerImpl(QObject obj,String url,List<PdfAttributes> pdfAttributes){
-		super(obj,url,pdfAttributes);
+	public boolean makePdfFromUrl(PdfAttributes pdfAttribute){
+		this.url=new QUrl(url);
+		MyRunnable runnable = new MyRunnable(pdfAttribute);
+	     QThread thread = new QThread(runnable);
+	     runnable.moveToThread(thread);
+	     thread.start();
+	     while(runnable.getFile()==null){
+	    	 try {
+				Thread.sleep(1000);
+				System.out.println("Waiting for image to be generated . . .");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	     }
+	     System.out.println("File Generated "+runnable.getFile().getAbsolutePath());
+		return true;
 	}
+	/**
+	 * Method to load html content from provided url   
+	 */
+	public boolean makePdfFromHTML(PdfAttributes pdfAttribute,String handler){
+		return true;
+	}
+	
+	private class MyRunnable extends QObject implements Runnable {
 
-	/**
-	 * Method to load html content from provided url   
-	 */
-	public boolean makePdfFromUrl(){
-		try{
-		if(logger.isDebugEnabled())
-			logger.debug("Connecting to url : "+this.url);
-		//if(QApplication.instance() == null)
-		//	QApplication.initialize(new String[] { });
-		//System.out.println("QApplication : "+qApp);
-		page = new QWebPage();
-		
-		System.out.println("Initialized qwebpage");
-//		this.parent().moveToThread(QApplication.instance().thread());
-//		page.mainFrame().load(new QNetworkRequest(this.url));
-		page.loadStarted.connect(this, "loadStarted()");
-		page.loadProgress.connect(this, "loadProgress()");
-		page.loadFinished.connect(this, "loadDone()");
-		//finished.connect(qApp, "quit()");
-		finished.emit();
-		//QApplication.exec();
-    	}catch(Exception exp){
-			logger.error(exp.getMessage()+ " Error While making a pdf");
-			return false;
+        private QWebPage page;
+        private QEventLoop loop;
+        private QUrl url;
+        private File file;
+        private PdfAttributes pdfAttribute;
+        
+        public MyRunnable(String url) {
+            page = new QWebPage(this);
+            this.url= new QUrl(url);
+        }
+        public MyRunnable(PdfAttributes pdfAttribute) {
+            page = new QWebPage(this);
+            this.pdfAttribute = pdfAttribute;
+        }
+
+        public void run() {
+            try {
+            	
+                page.loadFinished.connect(this, "loadFinished()");
+                page.loadProgress.connect(this,  "loadProgress(int)");
+                page.mainFrame().load(this.url);
+                System.out.println("Loaded ");
+               
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+
+            loop = new QEventLoop();
+            loop.exec();
+        }
+
+        public void loadProgress(final int progress) {
+        	System.out.println("In progress of "+url.toString()+" % Completed "+progress);
+        }
+
+        public void loadFinished() {
+            page.setViewportSize(page.mainFrame().contentsSize());        
+            QPrinter printer = new QPrinter();
+            String fileName=pdfAttribute.getPdfPath();
+            printer.setOutputFileName(fileName);
+            printer.setOutputFormat(QPrinter.OutputFormat.PdfFormat);	            
+            QPainter painter = new QPainter();
+            painter.begin(printer);
+            page.mainFrame().render(painter);
+            painter.end();
+        	System.out.println("Load Finished");
+            setFile(new File(fileName));
+            loop.exit();
+        
+        }
+
+		public File getFile() {
+			return file;
 		}
-		return true;
-	}
-	/**
-	 * Method to load html content from provided url   
-	 */
-	public boolean makePdfFromHTML(String handler){
-		try{
-		if(QApplication.instance() == null)
-			QApplication.initialize(new String[] { });
-		System.out.println("QApplication : "+QApplication.instance());
-		page = new QWebPage(null);
-		page.mainFrame().load(new QNetworkRequest((QUrl)null));
-		page.mainFrame().setHtml(getHtml());
-		page.loadStarted.connect(this, "loadStarted()");
-		page.loadProgress.connect(this, "loadProgress()");
-		page.loadFinished.connect(this, "loadDone()");
-		finished.connect(QApplication.instance(), "quit()");
-		QApplication.exec();
-    	}catch(Exception exp){
-			logger.error(exp.getMessage()+ " Error While making a pdf");
-			return false;
+
+		public void setFile(File file) {
+			this.file = file;
 		}
-		return true;
-	}
-	@SuppressWarnings("unused")
-	private void loadStarted(){
-		logger.debug("Part in Started");
-	}
-	@SuppressWarnings("unused")
-	private void loadProgress(){
-		logger.debug("Part in Progress");
-	}
-	/**
-	 * Called internally by makeSnap() method to save loaded image(s) based on provided ImageAttribute details.  
-	 */
-	@SuppressWarnings("unused")
-	private boolean loadDone() {
-		for(PdfAttributes pdfAttribute: this.pdfAttributes){
-			logger.debug("Loading for page url completed : "+ this.url);
-			//String pdfPath = store.savePdf(this.url, page, pdfAttribute);
-		}
-	    finished.emit();
-	    return true;
+        
     }
-	public IStore getStore() {
-		return store;
-	}
-	public void setStore(IStore store) {
-		this.store = store;
-	}
-	
 }

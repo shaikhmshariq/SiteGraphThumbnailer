@@ -4,22 +4,29 @@
  */
 package com.sitegraph.core.attributes;
 
-import com.sitegraph.core.util.Constants;
-import com.sitegraph.core.util.WebAppConstants;
-import com.trolltech.qt.core.QSize;
+import java.io.Serializable;
 
-public class ImageAttributes {
+import com.sitegraph.core.util.SiteGraphConstants;
 
+public class ImageAttributes implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2098837372709682497L;
 	protected String imageSuffix=null;
-	protected QSize imageSize=null;
-	protected String absoluteImageFilePath = WebAppConstants.IMAGE_ABSOLUTE_PATH;
+	protected int imageHeight;
+	protected int imageWidth;
 	protected boolean mirrored = false;
-	
+	protected String url=null;
+	protected String imagePath=null;
 	/**
 	 *  Class Default constructor
 	 */
 	public ImageAttributes(){
-		this.imageSize = new QSize(Constants.DEFAULT_IMAGE_WIDTH,Constants.DEFAULT_IMAGE_HEIGHT);
+		this.imageSuffix = SiteGraphConstants.PNG_IMAGE_SUFFIX;
+		this.imageWidth = SiteGraphConstants.DEFAULT_IMAGE_WIDTH;
+		this.imageHeight= SiteGraphConstants.DEFAULT_IMAGE_HEIGHT;
 	}
 	
 	/**
@@ -27,22 +34,23 @@ public class ImageAttributes {
 	 * @param imageSize Image size wrapped in QSize Object
 	 * @param absoluteImageFilePath Absolute Image path without extension details
 	 */
-	public ImageAttributes(String imageSuffix, QSize imageSize,String absoluteImageFilePath) {
+	public ImageAttributes(String imageSuffix, int imageHeight,int imageWidth,String absoluteImageFilePath) {
 
 		super();
 		this.imageSuffix = imageSuffix;
-		this.imageSize = imageSize;
-		this.absoluteImageFilePath = absoluteImageFilePath;
+		this.imageHeight = imageHeight;
+		this.imageWidth= imageWidth;
 	}
 	
 	/**
 	 * @param imageSuffix Image suffix .png.jpeg etc 
 	 * @param imageSize Image size wrapped in QSize Object
 	 */
-	public ImageAttributes(String imageSuffix, QSize imageSize) {
+	public ImageAttributes(String imageSuffix, int imageHeight,int imageWidth) {
 		super();
 		this.imageSuffix = imageSuffix;
-		this.imageSize = imageSize;
+		this.imageHeight = imageHeight;
+		this.imageWidth= imageWidth;
 	}
 	
 	/**
@@ -68,33 +76,23 @@ public class ImageAttributes {
 		this.imageSuffix = imageSuffix;
 	}
 	
-	/**
-	 * @return Returns Image suffix attached with this ImageAttribute object.  
-	 */
-	public QSize getImageSize() {
-		return imageSize;
-	}
-	
-	/**
-	 * @param Sets Image size attached with this ImageAttribute object wrapped in QSize Object.  
-	 */
-	public void setImageSize(QSize imageSize) {
-		this.imageSize = imageSize;
-	}
-	
-	/**
-	 * @return Returns Image suffix attached with this ImageAttribute object.  
-	 */
-	public String getAbsoluteImageFilePath() {
-		return absoluteImageFilePath;
+		
+	public int getImageHeight() {
+		return imageHeight;
 	}
 
-	/**
-	 * @param Sets Image's absolute path except image suffix.  
-	 */
-	public void setAbsoluteImageFilePath(String absoluteImageFilePath) {
-		this.absoluteImageFilePath = absoluteImageFilePath;
+	public void setImageHeight(int imageHeight) {
+		this.imageHeight = imageHeight;
 	}
+
+	public int getImageWidth() {
+		return imageWidth;
+	}
+
+	public void setImageWidth(int imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+
 	/**
 	 * @param Denotes if mirror image needs to be created.  
 	 */
@@ -107,6 +105,22 @@ public class ImageAttributes {
 	 */
 	public void setMirrored(boolean mirrored) {
 		this.mirrored = mirrored;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	

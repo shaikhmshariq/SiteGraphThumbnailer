@@ -12,7 +12,7 @@
 
 <!-- <bean class="com.sitegraph.core.image.impl.ImageThumbnailerImpl" id="imageThumbnailer"  scope="prototype" lazy-init="false" >
 	<constructor-arg>
-		<util:constant static-field="com.sitegraph.core.util.Constants.DEFAULT_URL"/>
+		<util:constant static-field="com.sitegraph.core.util.SiteGraphConstants.DEFAULT_URL"/>
 	</constructor-arg>
 </bean>
  -->

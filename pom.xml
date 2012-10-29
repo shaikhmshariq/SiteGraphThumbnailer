@@ -4,6 +4,8 @@
   <artifactId>SiteGraphThumbnailer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
+  <reporting>
+  </reporting>
   <properties>
   	<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
   </properties>

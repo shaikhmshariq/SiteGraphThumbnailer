@@ -3,10 +3,8 @@
  */
 package com.sitegraph.core.attributes.pdf;
 
-import com.sitegraph.core.util.Constants;
-import com.sitegraph.core.util.WebAppConstants;
+import com.sitegraph.core.util.SiteGraphConstants;
 import com.trolltech.qt.core.QSize;
-import com.trolltech.qt.gui.QPrinter;
 
 /**
  * @author Mohammed
@@ -14,34 +12,31 @@ import com.trolltech.qt.gui.QPrinter;
  */
 public class PdfAttributes {
 
-	private QPrinter.PageSize pdfTemplateSize = QPrinter.PageSize.A4;
-	private QPrinter.Orientation orientation = QPrinter.Orientation.Portrait;
+	private SiteGraphConstants.PageSize pdfTemplateSize = SiteGraphConstants.PageSize.A4;
+	private SiteGraphConstants.Orientation orientation = SiteGraphConstants.Orientation.PORTRAIT;
 	private int resolution = 130;
-	private QSize pageSize = new QSize(Constants.DEFAULT_PDF_WIDTH,Constants.DEFAULT_PDF_HEIGHT);
-	private String absolutePdfFilePath = WebAppConstants.PDF_ABSOLUTE_PATH;;
+	private QSize pageSize = new QSize(SiteGraphConstants.DEFAULT_PDF_WIDTH,SiteGraphConstants.DEFAULT_PDF_HEIGHT);
+	private String pdfPath=null;
+	private String html=null;
+	private String url=null;
 	
-	public String getAbsolutePdfFilePath() {
-		return absolutePdfFilePath;
-	}
-	public void setAbsolutePdfFilePath(String absolutePdfFilePath) {
-		this.absolutePdfFilePath = absolutePdfFilePath;
-	}
+	
 	public QSize getPageSize() {
 		return pageSize;
 	}
 	public void setPageSize(QSize pageSize) {
 		this.pageSize = pageSize;
 	}
-	public QPrinter.PageSize getPdfTemplateSize() {
+	public SiteGraphConstants.PageSize getPdfTemplateSize() {
 		return pdfTemplateSize;
 	}
-	public void setPdfTemplateSize(QPrinter.PageSize pdfTemplateSize) {
+	public void setPdfTemplateSize(SiteGraphConstants.PageSize pdfTemplateSize) {
 		this.pdfTemplateSize = pdfTemplateSize;
 	}
-	public QPrinter.Orientation getOrientation() {
+	public SiteGraphConstants.Orientation getOrientation() {
 		return orientation;
 	}
-	public void setOrientation(QPrinter.Orientation orientation) {
+	public void setOrientation(SiteGraphConstants.Orientation orientation) {
 		this.orientation = orientation;
 	}
 	public int getResolution() {
@@ -50,6 +45,23 @@ public class PdfAttributes {
 	public void setResolution(int resolution) {
 		this.resolution = resolution;
 	}
-	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getPdfPath() {
+		return pdfPath;
+	}
+	public void setPdfPath(String pdfPath) {
+		this.pdfPath = pdfPath;
+	}
+	public String getHtml() {
+		return html;
+	}
+	public void setHtml(String html) {
+		this.html = html;
+	}
 	
 }
