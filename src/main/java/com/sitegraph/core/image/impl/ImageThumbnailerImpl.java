@@ -157,6 +157,7 @@ public class ImageThumbnailerImpl implements IImageThumbnailer {
         	page.setViewportSize(size);
 			page.mainFrame().setScrollBarPolicy(Orientation.Horizontal, ScrollBarPolicy.ScrollBarAlwaysOff);
 			page.mainFrame().setScrollBarPolicy(Orientation.Vertical, ScrollBarPolicy.ScrollBarAlwaysOff);
+			
 			page.setViewportSize(new QSize(SiteGraphConstants.DEFAULT_IMAGE_WIDTH, SiteGraphConstants.DEFAULT_IMAGE_HEIGHT));
 		    QImage image = new QImage(page.viewportSize(), QImage.Format.Format_ARGB32);
 		    image.fill(QColor.white.rgb());
