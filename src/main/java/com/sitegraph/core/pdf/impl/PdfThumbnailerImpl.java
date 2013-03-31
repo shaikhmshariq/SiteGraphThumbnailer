@@ -11,10 +11,14 @@ import org.apache.log4j.Logger;
 
 import com.sitegraph.core.attributes.pdf.PdfAttributes;
 import com.sitegraph.core.pdf.IPdfThumbnailer;
+import com.sitegraph.core.util.SiteGraphConstants;
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.core.QEventLoop;
 import com.trolltech.qt.core.QObject;
+import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QUrl;
+import com.trolltech.qt.core.Qt.Orientation;
+import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPrinter;
 import com.trolltech.qt.webkit.QWebPage;
@@ -100,6 +104,7 @@ public class PdfThumbnailerImpl implements IPdfThumbnailer {
         public MyRunnable(PdfAttributes pdfAttribute) {
             page = new QWebPage(this);
             this.pdfAttribute = pdfAttribute;
+            this.url= new QUrl(pdfAttribute.getUrl());
         }
 
         public void run() {
@@ -123,7 +128,11 @@ public class PdfThumbnailerImpl implements IPdfThumbnailer {
         }
 
         public void loadFinished() {
-            page.setViewportSize(page.mainFrame().contentsSize());        
+        	QSize size =new QSize(SiteGraphConstants.DEFAULT_PDF_WIDTH,SiteGraphConstants.DEFAULT_PDF_HEIGHT);
+        	page.setViewportSize(size);
+			page.mainFrame().setScrollBarPolicy(Orientation.Horizontal, ScrollBarPolicy.ScrollBarAlwaysOff);
+			page.mainFrame().setScrollBarPolicy(Orientation.Vertical, ScrollBarPolicy.ScrollBarAlwaysOff);
+			       
             QPrinter printer = new QPrinter();
             String fileName=pdfAttribute.getPdfPath();
             printer.setOutputFileName(fileName);

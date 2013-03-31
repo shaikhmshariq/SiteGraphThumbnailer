@@ -3,30 +3,36 @@
  */
 package com.sitegraph.core.attributes.pdf;
 
+import java.io.Serializable;
+
 import com.sitegraph.core.util.SiteGraphConstants;
-import com.trolltech.qt.core.QSize;
 
 /**
  * @author Mohammed
  *
  */
-public class PdfAttributes {
+public class PdfAttributes implements Serializable{
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8823588276369086533L;
 	private SiteGraphConstants.PageSize pdfTemplateSize = SiteGraphConstants.PageSize.A4;
 	private SiteGraphConstants.Orientation orientation = SiteGraphConstants.Orientation.PORTRAIT;
 	private int resolution = 130;
-	private QSize pageSize = new QSize(SiteGraphConstants.DEFAULT_PDF_WIDTH,SiteGraphConstants.DEFAULT_PDF_HEIGHT);
+	//private QSize pageSize = new QSize(SiteGraphConstants.DEFAULT_PDF_WIDTH,SiteGraphConstants.DEFAULT_PDF_HEIGHT);
 	private String pdfPath=null;
 	private String html=null;
 	private String url=null;
 	
 	
-	public QSize getPageSize() {
+	/*public QSize getPageSize() {
 		return pageSize;
 	}
 	public void setPageSize(QSize pageSize) {
 		this.pageSize = pageSize;
-	}
+	}*/
 	public SiteGraphConstants.PageSize getPdfTemplateSize() {
 		return pdfTemplateSize;
 	}
